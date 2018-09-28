@@ -105,6 +105,82 @@ function alexanne_theme_content_width() {
 add_action( 'after_setup_theme', 'alexanne_theme_content_width', 0 );
 
 
+function annonce_post_type(){
+    $labels = array(
+		'name' => _x('Annonces', 'Post Type General Name', 'theme-personnalise'),
+		'singular_name' =>_x('Annonce', 'Post Type Singular Name', 'theme-personnalise'),
+		'menu_name' => __( 'Annonces', 'theme-personnalise'),
+		'parent_item_colon' => __( 'Parent Annonce', 'theme-personnalise'),
+		'all_items' => __( 'Toutes les Annonces', 'theme-personnalise'),
+		'view_item' => __( 'Voir une Annonce', 'theme-personnalise'),
+		'add_new_item' => __( 'Ajouter une nouvelle Annonce', 'theme-personnalise'),
+		'add_new' => __( 'Ajouter nouvelle', 'theme-personnalise'),
+		'edit_item' => __( 'Editer Annonce', 'theme-personnalise'),
+		'update_item' => __( 'Mettre à jour Annonce', 'theme-personnalise'),
+		'search_items' => __( 'Rechercher Annonce', 'theme-personnalise'),
+		'not_found' => __( 'Non trouvé', 'theme-personnalise'),
+		'not_found_in_trash' => __( 'Non trouvé dans la corbeille', 'theme-personnalise'),
+		);
+		// On définit les autres options pour le post personnalisé
+$args = array(
+	'label' => __( 'Annonces', 'theme-personnalise'),
+	'description' => __('Nouveautés sur le marché immobilié! Ventes et Locations', 'theme-personnalise'),
+	'labels' => $labels,
+	// On peut l'éditer dans l'éditeur de posts, définir un résumé, des champs personnalisés, ..
+	'supports' => array( 'title', 'editor', 'excerpt', 'author',
+	'thumbnail', 'comments', 'revisions', 'custom‐fields', ),
+	// On l'associe avec une taxonomie (ici genres).
+	'taxonomies' => array( 'genres' ),
+	/* Un post personnalisé hiérarchique est comme une Page et peut avoir un
+	Parent et des enfants. Un PP non‐hiérarchique est comme un article. */
+	'hierarchical' => false,
+	'public' => true,
+	'show_ui' => true,
+	'show_in_menu' => true,
+	'show_in_nav_menus' => true,
+	'show_in_admin_bar' => true,
+	'menu_position' => 5,
+	'can_export' => true,
+	'has_archive' => true,
+	'exclude_from_search' => false,
+	'publicly_queryable' => true,
+	'capability_type' => 'page',
+	);
+	// Enregistrer le Type de Post personnalisé
+	register_post_type( 'Annonces', $args );
+}
+	/* Utiliser le hook 'init' pour exécuter l’action d’enregistrement du
+	* Type personnalisé.
+	*/
+
+add_action( 'init', 'annonce_post_type', 0 );
+
+
+
+
+	/*
+ 	*  Taxonomie pour les annonces immobilieres 
+	*  
+	*/
+
+	function define_type_annonce_taxonomy(){
+		
+		register_taxonomy(
+			'type',
+			'annonces',
+			array(
+				'hierarchical' => true,
+				'label' => 'Genre',
+				'query_var' => true,
+				'rewrite' => true
+			)
+		);
+	}
+
+
+
+
+
 
 /**
  * Enqueue scripts and styles.
